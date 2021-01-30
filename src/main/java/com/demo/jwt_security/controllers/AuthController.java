@@ -3,6 +3,7 @@ package com.demo.jwt_security.controllers;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +43,8 @@ public class AuthController {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private ModelMapper modelMapper;
+	
 	private JwtUtil jwtTokenUtil;
 	
 	
