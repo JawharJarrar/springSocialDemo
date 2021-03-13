@@ -1,5 +1,6 @@
 package com.demo.jwt_security.services;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.demo.jwt_security.repository.UserRepository;
 
 @Service
-public class MyUserDetailService  implements UserDetailsService{
+public class MyUserDetailService  implements UserDetailsService, Serializable{
 
 	@Autowired
 	UserRepository  userRepository;

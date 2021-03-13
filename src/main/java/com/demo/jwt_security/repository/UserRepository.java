@@ -10,6 +10,8 @@ public interface UserRepository  extends JpaRepository<User, Long> {
 	 
     @Query("SELECT u.password FROM User u where u.username = (:name)")
     public String  getPasswordByUsername(String name ); 
+    public User findByUsername(String username);
 
 	}
+
 

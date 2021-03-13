@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.jwt_security.domain.User;
 import com.demo.jwt_security.models.AuthenticaionRequest;
 import com.demo.jwt_security.models.AuthenticationResponse;
+import com.demo.jwt_security.models.UserDto;
 import com.demo.jwt_security.repository.UserRepository;
 import com.demo.jwt_security.util.JwtUtil;
 
@@ -28,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
 	
@@ -43,9 +45,10 @@ public class AuthController {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private ModelMapper modelMapper;
-	
 	private JwtUtil jwtTokenUtil;
+	
+    @Autowired
+	private ModelMapper modelMapper;
 	
 	
 	@RequestMapping({ "/hello" })
@@ -72,8 +75,11 @@ public class AuthController {
 		}
 		
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		
+		User user = userRepository.findByUsername(userDetails.getUsername());
+	    UserDto userDto = modelMapper.map(user, UserDto.class);
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		return ResponseEntity.ok(new AuthenticationResponse(jwt,userDto));
 		
 		 
 		
@@ -101,4 +107,5 @@ public class AuthController {
 		return ResponseEntity.ok(Users);	
 	}
 	
+
 }
